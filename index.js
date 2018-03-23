@@ -13,9 +13,7 @@ const Alexa = require('alexa-sdk');
 
 const states = {
     TRANINGTYPEMODE: '_TRANINGTYPEMODE',
-    TRANINGWEIGHTMODE: '_TRANINGWEIGHTMODE',
     TRANINGAMOUNTMODE: '_TRANINGAMOUNTMODE',
-    TRANINGSETCOUNTMODE: '_TRANINGSETCOUNTMODE',
     TRANINGSAVEMODE: '_TRANINGSAVEMODE',
 };
 
@@ -26,14 +24,35 @@ exports.handler = function (event, context) {
     alexa.execute();
 };
 
+const startSessionHandlers = {
+    'StartSession': function () {
+        this.handler.state = 'TRANINGTYPEMODE';
+        this.emit(':ask', '今日の筋トレを記録します。まずはどんな種目をしたのか教えてください。');
+    },
+    'Unhandled': function() {
+        const message = '筋トレをした種目を教えてください。';
+        this.emit(':ask', message, message);
+    }   
+};
+
+const traningIntent = Alexa.CreateStateHandler(states.TRANINGWEIGHTMODE, {  
+    'TrainingIntent': function () {
+        this.handler.state = 'TRANINGAMOUNTMODE';
+        const name = this.event.request.intent.slots.Traning.value;
+        this.emit(':ask', 'ウェイトや回数、セット数を教えてください');
+    },
+    'Unhandled': function() {
+        const message = 'ウェイトや回数、セット数を教えてください';
+        this.emit(':ask', message, message);
+    } 
+});
+
 const handlers = {
     'LaunchRequest': function () {
-        this.handler.state = '';
-        this.attributes['name'] = '';
-        this.attributes['weight'] = '';
-        this.attributes['amount'] = '';
-        this.attributes['setcount'] = '';
-        this.emit(':ask', '今日の筋トレを記録します。まずはどんな種目をしたのか教えてください。');
+        this.emit('StartSession');
+    },
+    'StartOverIntent': function () {
+        this.emit('StartSession');
     },
     'TraningIntent': function () {
         this.handler.state = states.TRANINGWEIGHTMODE;

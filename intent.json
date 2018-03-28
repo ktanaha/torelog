@@ -40,16 +40,17 @@
                         }
                     ],
                     "samples": [
+                        "{Count} 回 {Set} セット",
+                        "{Weight} キロ {Count} 回 {Set} セット",
                         "{Count} 回 {Set} セットでやります",
                         "{Count} 回 {Set} セット {Weight} キロでやります",
                         "重さは {Weight} キロで回数は {Count} 回セット数は {Set} セットにします",
                         "ウェイトは {Weight} キロで回数は {Count} 回セット数は {Set} セットにします",
-                        "自重で {Count} 回 {Set} セットします",
-                        "{Count} 回 {Set} セットします"
+                        "自重で {Count} 回 {Set} セットします"
                     ]
                 },
                 {
-                    "name": "TraningIntent",
+                    "name": "TrainingIntent",
                     "slots": [
                         {
                             "name": "Traning",
